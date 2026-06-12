@@ -1,0 +1,24 @@
+# Build output
+target/
+
+# App binaries (downloaded by scripts/download-app.sh)
+apps/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Claude Code
+.claude/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
