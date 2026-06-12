@@ -1,0 +1,64 @@
+package io.hermes.pages.components;
+
+import io.appium.java_client.android.AndroidDriver;
+import io.hermes.core.NativeDialogs;
+import io.hermes.elements.NavBarElements;
+import io.hermes.pages.BasePage;
+
+import java.time.Duration;
+
+/**
+ * Header bar + drawer menu, shared by every page via composition.
+ */
+public class NavBar extends BasePage {
+
+    public NavBar(AndroidDriver driver) {
+        super(driver);
+    }
+
+    public void openMenu() {
+        tap(NavBarElements.OPEN_MENU_BUTTON);
+    }
+
+    /**
+     * Opens the login screen through the drawer. If a previous scenario leaked a
+     * logged-in session, logs out first so the login entry is available again.
+     */
+    public void openLoginFromMenu() {
+        openMenu();
+        if (!isVisible(NavBarElements.MENU_ITEM_LOG_IN, Duration.ofSeconds(3))
+                && isVisible(NavBarElements.MENU_ITEM_LOG_OUT, Duration.ofSeconds(2))) {
+            confirmLogout();
+            openMenu();
+        }
+        tap(NavBarElements.MENU_ITEM_LOG_IN);
+    }
+
+    public void openCatalogFromMenu() {
+        openMenu();
+        tap(NavBarElements.MENU_ITEM_CATALOG);
+    }
+
+    /** Logs out through the drawer, accepting the confirmation dialogs. */
+    public void logoutFromMenu() {
+        openMenu();
+        tap(NavBarElements.MENU_ITEM_LOG_OUT);
+        confirmLogout();
+    }
+
+    private void confirmLogout() {
+        // logout chains a confirmation and an acknowledge dialog
+        if (NativeDialogs.acceptIfPresent(driver, Duration.ofSeconds(5))) {
+            NativeDialogs.acceptIfPresent(driver, Duration.ofSeconds(3));
+        }
+    }
+
+    public void openCart() {
+        tap(NavBarElements.CART_BADGE);
+    }
+
+    /** Text shown on the cart badge, e.g. "1" when one item is in the cart. */
+    public String cartBadgeText() {
+        return nonBlankTextOf(NavBarElements.CART_BADGE);
+    }
+}

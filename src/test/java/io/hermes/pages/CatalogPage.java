@@ -1,0 +1,54 @@
+package io.hermes.pages;
+
+import io.appium.java_client.android.AndroidDriver;
+import io.hermes.elements.CatalogElements;
+import io.hermes.pages.components.NavBar;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+public class CatalogPage extends BasePage {
+
+    private final NavBar navBar;
+
+    public CatalogPage(AndroidDriver driver) {
+        super(driver);
+        this.navBar = new NavBar(driver);
+    }
+
+    public NavBar navBar() {
+        return navBar;
+    }
+
+    public boolean isLoaded() {
+        return isVisible(CatalogElements.STORE_ITEM);
+    }
+
+    public int visibleProductCount() {
+        return waitAllVisible(CatalogElements.STORE_ITEM).size();
+    }
+
+    public List<String> visibleProductNames() {
+        return textsOf(CatalogElements.STORE_ITEM_TEXT);
+    }
+
+    /** Prices currently on screen, parsed from texts like {@code $29.99}. */
+    public List<Double> visibleProductPrices() {
+        return textsOf(CatalogElements.STORE_ITEM_PRICE).stream()
+                .map(price -> Double.parseDouble(price.replace("$", "").trim()))
+                .toList();
+    }
+
+    public ProductPage openProductAt(int index) {
+        List<WebElement> items = waitAllVisible(CatalogElements.STORE_ITEM);
+        items.get(index).click();
+        return new ProductPage(driver);
+    }
+
+    /** Opens the sort modal and picks one of the options. */
+    public void sortBy(By sortOption) {
+        tap(CatalogElements.SORT_BUTTON);
+        tap(sortOption);
+    }
+}

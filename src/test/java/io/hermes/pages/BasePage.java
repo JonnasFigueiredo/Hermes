@@ -1,4 +1,4 @@
-package io.hermes.screens;
+package io.hermes.pages;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.hermes.core.Gestures;
@@ -13,19 +13,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Base for all screens and components. Synchronization is done exclusively
- * with explicit waits — no Thread.sleep anywhere.
+ * Base for all pages and components. Synchronization is done exclusively with
+ * explicit waits — no Thread.sleep anywhere.
  */
-public abstract class BaseScreen {
+public abstract class BasePage {
 
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
-    private static final Duration SHORT_TIMEOUT = Duration.ofSeconds(5);
+    protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
+    protected static final Duration SHORT_TIMEOUT = Duration.ofSeconds(5);
 
     protected final AndroidDriver driver;
     protected final WebDriverWait wait;
     protected final Gestures gestures;
 
-    protected BaseScreen(AndroidDriver driver) {
+    protected BasePage(AndroidDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
         this.gestures = new Gestures(driver);
@@ -40,8 +40,12 @@ public abstract class BaseScreen {
     }
 
     protected boolean isVisible(By locator) {
+        return isVisible(locator, SHORT_TIMEOUT);
+    }
+
+    protected boolean isVisible(By locator, Duration timeout) {
         try {
-            new WebDriverWait(driver, SHORT_TIMEOUT)
+            new WebDriverWait(driver, timeout)
                     .until(ExpectedConditions.visibilityOfElementLocated(locator));
             return true;
         } catch (TimeoutException e) {
@@ -50,13 +54,20 @@ public abstract class BaseScreen {
     }
 
     protected void tap(By locator) {
-        waitVisible(locator).click();
+        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
     protected void type(By locator, String text) {
         WebElement field = waitVisible(locator);
         field.clear();
         field.sendKeys(text);
+    }
+
+    /** Visible texts of every element matched by the locator, in screen order. */
+    protected List<String> textsOf(By locator) {
+        return waitAllVisible(locator).stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
     /**

@@ -18,12 +18,15 @@
 
     <appium.java-client.version>9.5.0</appium.java-client.version>
     <selenium.version>4.34.0</selenium.version>
-    <junit.version>5.11.4</junit.version>
-    <allure.version>2.29.1</allure.version>
+    <junit.version>5.14.4</junit.version>
+    <cucumber.version>7.34.3</cucumber.version>
+    <allure.version>2.35.2</allure.version>
     <aspectj.version>1.9.22.1</aspectj.version>
 
     <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+    <allure-maven.version>3.0.1</allure-maven.version>
+    <allure-commandline.version>2.42.1</allure-commandline.version>
   </properties>
 
   <dependencyManagement>
@@ -32,6 +35,13 @@
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
         <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-bom</artifactId>
+        <version>${cucumber.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -67,8 +77,23 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-suite</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit-platform-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-junit5</artifactId>
+      <artifactId>allure-cucumber7-jvm</artifactId>
       <version>${allure.version}</version>
       <scope>test</scope>
     </dependency>
@@ -100,6 +125,15 @@
             <version>${aspectj.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>${allure-maven.version}</version>
+        <configuration>
+          <reportVersion>${allure-commandline.version}</reportVersion>
+          <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
