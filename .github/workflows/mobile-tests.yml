@@ -93,7 +93,7 @@ jobs:
           profile: ${{ matrix.profile }}
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: mvn -B test $SUITE_FLAG
+          script: mvn -B verify $SUITE_FLAG
 
       - name: Upload Allure results
         if: always()
@@ -101,6 +101,16 @@ jobs:
         with:
           name: allure-results-api${{ matrix.api-level }}
           path: target/allure-results
+          if-no-files-found: ignore
+
+      - name: Upload Cucumber HTML reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-reports-api${{ matrix.api-level }}
+          path: |
+            target/cucumber-report
+            target/cucumber-html-reports
           if-no-files-found: ignore
 
       - name: Upload failure evidence

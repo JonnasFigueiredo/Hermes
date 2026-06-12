@@ -70,20 +70,20 @@ In Eclipse/IntelliJ, run `RunCucumberTest` as a JUnit test.
 
 ## Reports
 
-Two reports come out of every run (including runs started from the IDE):
+Three complementary reports, each with a distinct role:
 
-- **Instant HTML (Cucumber)** — generated during the run at
-  `target/cucumber-report/cucumber.html`; just open it in a browser. A
-  `cucumber.json` is written alongside for integrations.
-- **Allure** (deep analysis: steps, attachments, trends) — results land in
-  `target/allure-results`; build and open with:
+| Report | When it is produced | Where |
+| ------ | ------------------- | ----- |
+| **Cucumber HTML** (instant evidence) | During every run, including IDE runs | `target/cucumber-report/cucumber.html` |
+| **Masterthought** (rich offline HTML: charts per feature/tag/step) | On `mvn verify` (and on CI) | `target/cucumber-html-reports/overview-features.html` |
+| **Allure** (deep analysis: steps, attachments, run history) | `mvn allure:serve` locally; published to GitHub Pages by CI | `target/allure-results` → report |
 
 ```bash
-mvn allure:serve    # generates and opens in the browser
-mvn allure:report   # just generates (target/site/allure-maven-plugin)
+mvn verify          # runs the suite and builds the Masterthought report
+mvn allure:serve    # builds and opens the Allure report
 ```
 
-Failed scenarios include the failure screenshot as an attachment in both reports.
+Failed scenarios include the failure screenshot as an attachment in the reports.
 
 ## Configuration & execution profiles
 

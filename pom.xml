@@ -27,6 +27,7 @@
     <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
     <allure-maven.version>3.0.1</allure-maven.version>
     <allure-commandline.version>2.42.1</allure-commandline.version>
+    <maven-cucumber-reporting.version>5.11.0</maven-cucumber-reporting.version>
   </properties>
 
   <dependencyManagement>
@@ -134,6 +135,29 @@
           <reportVersion>${allure-commandline.version}</reportVersion>
           <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>net.masterthought</groupId>
+        <artifactId>maven-cucumber-reporting</artifactId>
+        <version>${maven-cucumber-reporting.version}</version>
+        <executions>
+          <execution>
+            <id>cucumber-html-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <projectName>Hermes</projectName>
+              <inputDirectory>${project.build.directory}/cucumber-report</inputDirectory>
+              <jsonFiles>
+                <param>**/*.json</param>
+              </jsonFiles>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <skipEmptyJSONFiles>true</skipEmptyJSONFiles>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
