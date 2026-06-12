@@ -1,0 +1,74 @@
+# Hermes local device farm — containerized Android emulators (budtmo/docker-android v2).
+#
+# HARD REQUIREMENT: a Linux host with KVM (/dev/kvm). This does NOT run on
+# Windows 10 Home (WSL2 lacks nested virtualization) or macOS. See README.md.
+#
+# Usage:  docker compose up -d
+#   Device 1: noVNC http://localhost:6080 | Appium http://localhost:4723
+#   Device 2: noVNC http://localhost:6081 | Appium http://localhost:4724
+
+services:
+
+  hermes-device-1:
+    # v2 image naming: budtmo/docker-android:emulator_<android-version>
+    image: budtmo/docker-android:emulator_11.0
+    container_name: hermes-device-1
+    # KVM is mandatory for hardware-accelerated emulation. Mapping only /dev/kvm
+    # is the least-privilege option; `privileged: true` also works if your
+    # environment refuses device mappings.
+    devices:
+      - /dev/kvm:/dev/kvm
+    environment:
+      # Device profile the emulator boots with (screen size, density, hardware).
+      # Full list of supported profiles: https://github.com/budtmo/docker-android
+      - EMULATOR_DEVICE=Samsung Galaxy S10
+      # Serve the emulator screen over noVNC (container port 6080) so you can
+      # watch the device live in a browser — no VNC client needed.
+      - WEB_VNC=true
+      # Start an Appium 2 server inside the container (container port 4723).
+      # Tests target it directly; no separate Appium install on the host.
+      - APPIUM=true
+    ports:
+      - "6080:6080"   # noVNC web UI  -> http://localhost:6080
+      - "4723:4723"   # Appium server -> APPIUM_URL=http://localhost:4723
+    volumes:
+      # Expose the project's APKs inside the container: the Appium server runs
+      # in here, so the `app` capability path must exist in the container.
+      # Point app.path/APP_PATH at /opt/hermes/apps/<apk> when using this farm.
+      - ../apps:/opt/hermes/apps:ro
+    healthcheck:
+      # Healthy once Android finishes booting (sys.boot_completed=1). Appium is
+      # available shortly after. Alternative: `cat device_status` in the
+      # container workdir reports the emulator state.
+      test: ["CMD-SHELL", "adb shell getprop sys.boot_completed | grep -q 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s   # cold-booting an emulator takes a while
+    restart: unless-stopped
+
+  hermes-device-2:
+    image: budtmo/docker-android:emulator_11.0
+    container_name: hermes-device-2
+    devices:
+      - /dev/kvm:/dev/kvm
+    environment:
+      # Different hardware profile — same Android version, smaller screen.
+      - EMULATOR_DEVICE=Nexus 5
+      - WEB_VNC=true
+      - APPIUM=true
+    ports:
+      - "6081:6080"   # noVNC web UI  -> http://localhost:6081
+      - "4724:4723"   # Appium server -> APPIUM_URL=http://localhost:4724
+    volumes:
+      - ../apps:/opt/hermes/apps:ro
+    healthcheck:
+      test: ["CMD-SHELL", "adb shell getprop sys.boot_completed | grep -q 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    restart: unless-stopped
+
+  # To scale the farm, copy one of the services above, give it a new name,
+  # a different EMULATOR_DEVICE and unique host ports (6082/4725, ...).

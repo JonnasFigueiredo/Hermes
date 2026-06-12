@@ -79,27 +79,49 @@ mvn allure:report   # just generates (target/site/allure-maven-plugin)
 
 Failed scenarios include the failure screenshot as an attachment.
 
-## Configuration
+## Configuration & execution profiles
 
-| Env var       | Default                                        | Description                        |
-| ------------- | ---------------------------------------------- | ---------------------------------- |
-| `APPIUM_URL`  | `http://127.0.0.1:4723`                        | Appium server URL                  |
-| `APP_PATH`    | `apps/Android-MyDemoAppRN.1.3.0.build-244.apk` | Path to the APK under test         |
-| `DEVICE_NAME` | `Android Emulator`                             | Device name passed to UiAutomator2 |
+The suite never knows where it runs — the execution target is pure configuration
+(see [ROADMAP.md](ROADMAP.md) for the architecture principles). A profile is selected
+with `-Dhermes.env=<name>` (or `HERMES_ENV`), loading `src/test/resources/config/<name>.properties`:
+
+| Profile | Target |
+| ------- | ------ |
+| `local` (default) | Emulator/device + Appium on this machine |
+| `grid`  | Containerized devices ([docker-android](docker/README.md), Linux/KVM hosts) |
+| `farm`  | Cloud device farm (BrowserStack App Automate shape; credentials via env vars only) |
+
+Every key can be overridden per run — precedence: system property > env var > profile file > default:
+
+| Key (`-D`)    | Env var       | Default                                        | Description                        |
+| ------------- | ------------- | ---------------------------------------------- | ---------------------------------- |
+| `appium.url`  | `APPIUM_URL`  | `http://127.0.0.1:4723`                        | Appium server / grid / farm hub URL |
+| `app.path`    | `APP_PATH`    | `apps/Android-MyDemoAppRN.1.3.0.build-244.apk` | APK path, or farm app id (`bs://...`) |
+| `device.name` | `DEVICE_NAME` | `Android Emulator`                             | Device name capability             |
+
+Profiles may also declare provider-specific Appium capabilities with the
+`capability.` prefix (e.g. `capability.appium:platformVersion=13.0`), forwarded
+as-is by the `DriverFactory` — integrating a new grid or farm requires zero code.
 
 ## CI
 
-The [workflow](.github/workflows/mobile-tests.yml) has two jobs:
+The [workflow](.github/workflows/mobile-tests.yml) has three jobs:
 
-1. **Compile gate** — fast `mvn test-compile` to fail early on broken code.
-2. **E2E** — enables KVM, installs Appium + UiAutomator2, boots an API 30 x86_64 emulator via `reactivecircus/android-emulator-runner` and runs `mvn test`. Allure results are always uploaded as artifacts; screenshots and the Appium log are uploaded on failure.
+1. **Compile gate** — `mvn test-compile` + Cucumber dry-run to fail early on broken code or unbound steps.
+2. **E2E (device matrix)** — enables KVM and runs the suite on a matrix of emulators (API 30/pixel_4 and API 33/pixel_6) via `reactivecircus/android-emulator-runner`: same code, different devices. Allure results are always uploaded; screenshots and the Appium log on failure.
+3. **Report** — merges Allure results from every device and publishes the report (with run history) to GitHub Pages.
+
+Runs can also be triggered manually from the Actions tab (`workflow_dispatch`) choosing the suite: `all`, `smoke` or `regression`.
+
+## Local device grid (Docker)
+
+[docker/](docker/README.md) ships a compose file that boots multiple containerized
+emulators with different device profiles (docker-android). It requires a **Linux host
+with KVM** — it does not work on Windows/macOS hosts; see the folder README.
 
 ## Roadmap
 
-- Device matrix in CI (multiple API levels / device profiles, same code)
-- docker-android grid on a Linux host (local "device farm")
-- iOS suite on a macOS runner
-- Allure report published to GitHub Pages
+See [ROADMAP.md](ROADMAP.md) — principles and phases (device farm profile, iOS on a macOS runner, ReportPortal).
 
 ## License
 

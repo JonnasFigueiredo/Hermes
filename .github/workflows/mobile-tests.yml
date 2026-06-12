@@ -5,6 +5,15 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      suite:
+        description: 'Test suite to run'
+        type: choice
+        default: all
+        options:
+          - all
+          - smoke
+          - regression
 
 jobs:
   compile:
@@ -23,11 +32,24 @@ jobs:
       - name: Compile tests
         run: mvn -B test-compile
 
+      - name: Validate step bindings (Cucumber dry-run)
+        run: mvn -B test -Dcucumber.execution.dry-run=true
+
   e2e:
-    name: E2E on Android emulator
+    name: E2E API ${{ matrix.api-level }} (${{ matrix.profile }})
     needs: compile
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - api-level: 30
+            profile: pixel_4
+          - api-level: 33
+            profile: pixel_6
+    env:
+      SUITE_FLAG: ${{ github.event.inputs.suite != '' && github.event.inputs.suite != 'all' && format('-Dgroups={0}', github.event.inputs.suite) || '' }}
     steps:
       - name: Enable KVM
         run: |
@@ -65,19 +87,19 @@ jobs:
       - name: Run E2E tests on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: ${{ matrix.api-level }}
           arch: x86_64
           target: google_apis
-          profile: pixel_4
+          profile: ${{ matrix.profile }}
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: mvn -B test
+          script: mvn -B test $SUITE_FLAG
 
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results
+          name: allure-results-api${{ matrix.api-level }}
           path: target/allure-results
           if-no-files-found: ignore
 
@@ -85,8 +107,45 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: failure-evidence
+          name: failure-evidence-api${{ matrix.api-level }}
           path: |
             target/screenshots
             appium.log
           if-no-files-found: ignore
+
+  report:
+    name: Publish Allure report
+    needs: e2e
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Allure results from all devices
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          path: allure-results
+          merge-multiple: true
+
+      - name: Get Allure history from gh-pages
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build Allure report with history
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          allure_results: allure-results
+          gh_pages: gh-pages
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
