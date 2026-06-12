@@ -10,7 +10,7 @@ public class CheckoutReviewPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(CheckoutReviewElements.SCREEN);
+        return isVisible(CheckoutReviewElements.SCREEN, DEFAULT_TIMEOUT);
     }
 
     public CheckoutCompletePage placeOrder() {

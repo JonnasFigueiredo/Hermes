@@ -43,6 +43,8 @@ jobs:
       - name: Run smoke suite against the grid
         env:
           APP_PATH: /opt/hermes/apps/Android-MyDemoAppRN.1.3.0.build-244.apk
+          TIMEOUT_DEFAULT: '30'
+          TIMEOUT_SHORT: '10'
         run: mvn -B verify -Dhermes.env=grid -Dgroups=smoke
 
       - name: Collect container logs

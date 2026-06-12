@@ -69,6 +69,16 @@ public final class Config {
         return get("device.name", defaultName);
     }
 
+    /** Default explicit-wait timeout; CI environments override it for slower emulators. */
+    public static java.time.Duration defaultTimeout() {
+        return java.time.Duration.ofSeconds(Long.parseLong(get("timeout.default", "15")));
+    }
+
+    /** Short timeout for presence/absence probes. */
+    public static java.time.Duration shortTimeout() {
+        return java.time.Duration.ofSeconds(Long.parseLong(get("timeout.short", "5")));
+    }
+
     /**
      * Extra Appium capabilities declared in the active profile with the
      * {@code capability.} prefix, e.g. {@code capability.appium:udid=emulator-5554}.

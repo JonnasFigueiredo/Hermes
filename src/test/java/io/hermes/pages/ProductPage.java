@@ -18,7 +18,7 @@ public class ProductPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(ProductElements.PRICE);
+        return isVisible(ProductElements.PRICE, DEFAULT_TIMEOUT);
     }
 
     public String price() {
@@ -26,7 +26,7 @@ public class ProductPage extends BasePage {
     }
 
     public boolean hasAddToCartButton() {
-        return isVisible(ProductElements.ADD_TO_CART_BUTTON);
+        return isVisible(ProductElements.ADD_TO_CART_BUTTON, DEFAULT_TIMEOUT);
     }
 
     public String counterAmount() {

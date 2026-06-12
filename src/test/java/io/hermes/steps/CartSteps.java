@@ -36,7 +36,8 @@ public class CartSteps {
     @Entao("o badge do carrinho mostra {string}")
     public void oBadgeDoCarrinhoMostra(String expected) {
         NavBar navBar = new NavBar(DriverManager.getDriver());
-        assertEquals(expected, navBar.cartBadgeText(), "O badge do carrinho deveria mostrar " + expected);
+        assertTrue(navBar.cartBadgeShows(expected),
+                "O badge do carrinho deveria mostrar " + expected);
     }
 
     @Entao("o carrinho contém {int} item/itens")

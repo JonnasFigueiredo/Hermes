@@ -22,7 +22,7 @@ public class CatalogPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(CatalogElements.STORE_ITEM);
+        return isVisible(CatalogElements.STORE_ITEM, DEFAULT_TIMEOUT);
     }
 
     public int visibleProductCount() {

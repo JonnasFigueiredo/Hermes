@@ -50,6 +50,9 @@ jobs:
             profile: pixel_6
     env:
       SUITE_FLAG: ${{ github.event.inputs.suite != '' && github.event.inputs.suite != 'all' && format('-Dgroups={0}', github.event.inputs.suite) || '' }}
+      # CI emulators are slower than local ones — give explicit waits more room
+      TIMEOUT_DEFAULT: '30'
+      TIMEOUT_SHORT: '10'
     steps:
       - name: Enable KVM
         run: |

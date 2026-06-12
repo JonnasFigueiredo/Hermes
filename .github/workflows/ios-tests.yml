@@ -23,6 +23,8 @@ jobs:
     env:
       PLATFORM: ios
       DEVICE_NAME: iPhone 16
+      TIMEOUT_DEFAULT: '30'
+      TIMEOUT_SHORT: '10'
       SUITE_FLAG: ${{ github.event.inputs.suite != '' && github.event.inputs.suite != 'all' && format('-Dgroups={0}', github.event.inputs.suite) || '' }}
     steps:
       - uses: actions/checkout@v4

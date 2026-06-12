@@ -10,7 +10,7 @@ public class CheckoutCompletePage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(CheckoutCompleteElements.SCREEN);
+        return isVisible(CheckoutCompleteElements.SCREEN, DEFAULT_TIMEOUT);
     }
 
     public CatalogPage continueShopping() {

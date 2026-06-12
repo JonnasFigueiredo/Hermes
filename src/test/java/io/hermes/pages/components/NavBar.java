@@ -61,4 +61,13 @@ public class NavBar extends BasePage {
     public String cartBadgeText() {
         return nonBlankTextOf(NavBarElements.CART_BADGE);
     }
+
+    /**
+     * Waits until the badge shows the expected count. The badge transitions through
+     * intermediate values (e.g. "1" right before a second item lands), so asserting
+     * on the first non-blank read would race on slower devices.
+     */
+    public boolean cartBadgeShows(String expected) {
+        return waitTextEquals(NavBarElements.CART_BADGE, expected);
+    }
 }

@@ -25,7 +25,7 @@ public class LoginPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(LoginElements.LOGIN_BUTTON);
+        return isVisible(LoginElements.LOGIN_BUTTON, DEFAULT_TIMEOUT);
     }
 
     public void loginAs(User user) {

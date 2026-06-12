@@ -18,7 +18,7 @@ public class CartPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(CartElements.SCREEN);
+        return isVisible(CartElements.SCREEN, DEFAULT_TIMEOUT);
     }
 
     public int itemCount() {
@@ -36,7 +36,7 @@ public class CartPage extends BasePage {
 
     /** The cart is empty when the SUT shows its "Go Shopping" call to action. */
     public boolean isEmpty() {
-        return isVisible(CartElements.GO_SHOPPING_BUTTON);
+        return isVisible(CartElements.GO_SHOPPING_BUTTON, DEFAULT_TIMEOUT);
     }
 
     public CatalogPage goShopping() {

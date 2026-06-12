@@ -11,7 +11,7 @@ public class CheckoutPaymentPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(CheckoutPaymentElements.SCREEN);
+        return isVisible(CheckoutPaymentElements.SCREEN, DEFAULT_TIMEOUT);
     }
 
     public void fillCard(PaymentCard card) {

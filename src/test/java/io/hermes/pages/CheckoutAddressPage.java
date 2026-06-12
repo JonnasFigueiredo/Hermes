@@ -11,7 +11,7 @@ public class CheckoutAddressPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(CheckoutAddressElements.SCREEN);
+        return isVisible(CheckoutAddressElements.SCREEN, DEFAULT_TIMEOUT);
     }
 
     public CheckoutPaymentPage fillAndGoToPayment(Address address) {

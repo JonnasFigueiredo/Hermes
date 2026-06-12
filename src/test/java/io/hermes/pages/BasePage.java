@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
  */
 public abstract class BasePage {
 
-    protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
-    protected static final Duration SHORT_TIMEOUT = Duration.ofSeconds(5);
+    protected static final Duration DEFAULT_TIMEOUT = io.hermes.core.Config.defaultTimeout();
+    protected static final Duration SHORT_TIMEOUT = io.hermes.core.Config.shortTimeout();
 
     protected final AppiumDriver driver;
     protected final WebDriverWait wait;
@@ -68,6 +68,23 @@ public abstract class BasePage {
         return waitAllVisible(locator).stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    /**
+     * Waits until the element's text equals the expected value; returns whether it did.
+     * Use for texts that transition through intermediate values (e.g. the cart badge
+     * going from "1" to "2"), where reading the first non-blank text would race.
+     */
+    protected boolean waitTextEquals(By locator, String expected) {
+        try {
+            wait.until(d -> {
+                List<WebElement> elements = d.findElements(locator);
+                return !elements.isEmpty() && expected.equals(readText(elements.get(0)));
+            });
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     /**

@@ -105,6 +105,8 @@ Every key can be overridden per run — precedence: system property > env var > 
 | `appium.url`  | `APPIUM_URL`  | `http://127.0.0.1:4723`                        | Appium server / grid / farm hub URL |
 | `app.path`    | `APP_PATH`    | `apps/Android-MyDemoAppRN.1.3.0.build-244.apk` | App path, or farm app id (`bs://...`) |
 | `device.name` | `DEVICE_NAME` | `Android Emulator` / `iPhone 15`               | Device name capability             |
+| `timeout.default` | `TIMEOUT_DEFAULT` | `15`                                   | Explicit-wait timeout (s); CI uses 30 |
+| `timeout.short`   | `TIMEOUT_SHORT`   | `5`                                    | Probe timeout (s); CI uses 10      |
 
 The core is platform-agnostic (`AppiumDriver` + platform-aware gestures and native
 dialogs). Android is the verified platform; iOS (XCUITest) is scaffolded and runs as an
