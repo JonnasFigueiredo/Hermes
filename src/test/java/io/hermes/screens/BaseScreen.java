@@ -1,0 +1,88 @@
+package io.hermes.screens;
+
+import io.appium.java_client.android.AndroidDriver;
+import io.hermes.core.Gestures;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Base for all screens and components. Synchronization is done exclusively
+ * with explicit waits — no Thread.sleep anywhere.
+ */
+public abstract class BaseScreen {
+
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
+    private static final Duration SHORT_TIMEOUT = Duration.ofSeconds(5);
+
+    protected final AndroidDriver driver;
+    protected final WebDriverWait wait;
+    protected final Gestures gestures;
+
+    protected BaseScreen(AndroidDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
+        this.gestures = new Gestures(driver);
+    }
+
+    protected WebElement waitVisible(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    protected List<WebElement> waitAllVisible(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    }
+
+    protected boolean isVisible(By locator) {
+        try {
+            new WebDriverWait(driver, SHORT_TIMEOUT)
+                    .until(ExpectedConditions.visibilityOfElementLocated(locator));
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+    protected void tap(By locator) {
+        waitVisible(locator).click();
+    }
+
+    protected void type(By locator, String text) {
+        WebElement field = waitVisible(locator);
+        field.clear();
+        field.sendKeys(text);
+    }
+
+    /**
+     * Waits until the element has a non-blank text and returns it. React Native exposes
+     * the accessibility id on a container ViewGroup whose own text is empty, so when
+     * needed the text is read from the child TextViews instead.
+     */
+    protected String nonBlankTextOf(By locator) {
+        return wait.until(d -> {
+            List<WebElement> elements = d.findElements(locator);
+            if (elements.isEmpty()) {
+                return null;
+            }
+            String text = readText(elements.get(0));
+            return text.isBlank() ? null : text;
+        });
+    }
+
+    private static String readText(WebElement element) {
+        String own = element.getText();
+        if (own != null && !own.isBlank()) {
+            return own;
+        }
+        return element.findElements(By.className("android.widget.TextView")).stream()
+                .map(WebElement::getText)
+                .filter(t -> t != null && !t.isBlank())
+                .collect(Collectors.joining(" "));
+    }
+}
