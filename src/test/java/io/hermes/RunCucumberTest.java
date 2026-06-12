@@ -12,7 +12,9 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "io.hermes.steps")
-@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME,
-        value = "pretty, io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm")
+@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty, "
+        + "html:target/cucumber-report/cucumber.html, "
+        + "json:target/cucumber-report/cucumber.json, "
+        + "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm")
 public class RunCucumberTest {
 }

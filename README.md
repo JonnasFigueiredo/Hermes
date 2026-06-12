@@ -68,16 +68,22 @@ mvn test -Dcucumber.execution.dry-run=true
 
 In Eclipse/IntelliJ, run `RunCucumberTest` as a JUnit test.
 
-## Reports (Allure)
+## Reports
 
-Every run writes results to `target/allure-results`. To build and open the HTML report:
+Two reports come out of every run (including runs started from the IDE):
+
+- **Instant HTML (Cucumber)** — generated during the run at
+  `target/cucumber-report/cucumber.html`; just open it in a browser. A
+  `cucumber.json` is written alongside for integrations.
+- **Allure** (deep analysis: steps, attachments, trends) — results land in
+  `target/allure-results`; build and open with:
 
 ```bash
 mvn allure:serve    # generates and opens in the browser
 mvn allure:report   # just generates (target/site/allure-maven-plugin)
 ```
 
-Failed scenarios include the failure screenshot as an attachment.
+Failed scenarios include the failure screenshot as an attachment in both reports.
 
 ## Configuration & execution profiles
 
