@@ -101,9 +101,14 @@ Every key can be overridden per run — precedence: system property > env var > 
 
 | Key (`-D`)    | Env var       | Default                                        | Description                        |
 | ------------- | ------------- | ---------------------------------------------- | ---------------------------------- |
+| `platform`    | `PLATFORM`    | `android`                                      | `android` or `ios` (experimental)  |
 | `appium.url`  | `APPIUM_URL`  | `http://127.0.0.1:4723`                        | Appium server / grid / farm hub URL |
-| `app.path`    | `APP_PATH`    | `apps/Android-MyDemoAppRN.1.3.0.build-244.apk` | APK path, or farm app id (`bs://...`) |
-| `device.name` | `DEVICE_NAME` | `Android Emulator`                             | Device name capability             |
+| `app.path`    | `APP_PATH`    | `apps/Android-MyDemoAppRN.1.3.0.build-244.apk` | App path, or farm app id (`bs://...`) |
+| `device.name` | `DEVICE_NAME` | `Android Emulator` / `iPhone 15`               | Device name capability             |
+
+The core is platform-agnostic (`AppiumDriver` + platform-aware gestures and native
+dialogs). Android is the verified platform; iOS (XCUITest) is scaffolded and runs as an
+[experimental manual workflow](.github/workflows/ios-tests.yml) on a macOS runner.
 
 Profiles may also declare provider-specific Appium capabilities with the
 `capability.` prefix (e.g. `capability.appium:platformVersion=13.0`), forwarded
@@ -123,7 +128,9 @@ Runs can also be triggered manually from the Actions tab (`workflow_dispatch`) c
 
 [docker/](docker/README.md) ships a compose file that boots multiple containerized
 emulators with different device profiles (docker-android). It requires a **Linux host
-with KVM** — it does not work on Windows/macOS hosts; see the folder README.
+with KVM** — it does not work on Windows/macOS hosts; see the folder README. The
+[grid smoke workflow](.github/workflows/grid-smoke.yml) validates the grid on demand
+using the KVM available on GitHub's ubuntu runners.
 
 ## Roadmap
 

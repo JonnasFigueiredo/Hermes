@@ -1,0 +1,90 @@
+name: iOS E2E (experimental)
+
+# Manual trigger only while the iOS suite is being stabilized — it does not
+# gate pushes/PRs. Runs on a GitHub-hosted macOS runner (free for public repos),
+# which ships Xcode and iPhone simulators.
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: 'Test suite to run'
+        type: choice
+        default: smoke
+        options:
+          - all
+          - smoke
+          - regression
+
+jobs:
+  e2e-ios:
+    name: E2E iOS Simulator
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      PLATFORM: ios
+      DEVICE_NAME: iPhone 16
+      SUITE_FLAG: ${{ github.event.inputs.suite != '' && github.event.inputs.suite != 'all' && format('-Dgroups={0}', github.event.inputs.suite) || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Appium + XCUITest driver
+        run: |
+          npm install -g appium
+          appium driver install xcuitest
+
+      - name: Download app under test (iOS simulator build)
+        run: bash scripts/download-app.sh ios
+
+      - name: Resolve app path
+        run: echo "APP_PATH=$(find apps -maxdepth 2 -name '*.app' -type d | head -1)" >> "$GITHUB_ENV"
+
+      - name: List available simulators
+        run: xcrun simctl list devices available | head -30
+
+      - name: Start Appium server
+        run: |
+          nohup appium --log appium.log --log-level info &
+          timeout 30 bash -c 'until curl -sf http://127.0.0.1:4723/status; do sleep 1; done'
+
+      - name: Run E2E tests on iOS simulator
+        run: mvn -B verify $SUITE_FLAG
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-ios
+          path: target/allure-results
+          if-no-files-found: ignore
+
+      - name: Upload Cucumber HTML reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-reports-ios
+          path: |
+            target/cucumber-report
+            target/cucumber-html-reports
+          if-no-files-found: ignore
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-evidence-ios
+          path: |
+            target/screenshots
+            appium.log
+          if-no-files-found: ignore

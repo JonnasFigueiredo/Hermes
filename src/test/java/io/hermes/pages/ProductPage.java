@@ -1,6 +1,6 @@
 package io.hermes.pages;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.hermes.elements.ProductElements;
 import io.hermes.pages.components.NavBar;
 
@@ -8,7 +8,7 @@ public class ProductPage extends BasePage {
 
     private final NavBar navBar;
 
-    public ProductPage(AndroidDriver driver) {
+    public ProductPage(AppiumDriver driver) {
         super(driver);
         this.navBar = new NavBar(driver);
     }

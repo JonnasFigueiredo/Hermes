@@ -1,6 +1,6 @@
 package io.hermes.pages;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.hermes.core.Gestures;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -21,11 +21,11 @@ public abstract class BasePage {
     protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
     protected static final Duration SHORT_TIMEOUT = Duration.ofSeconds(5);
 
-    protected final AndroidDriver driver;
+    protected final AppiumDriver driver;
     protected final WebDriverWait wait;
     protected final Gestures gestures;
 
-    protected BasePage(AndroidDriver driver) {
+    protected BasePage(AppiumDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
         this.gestures = new Gestures(driver);

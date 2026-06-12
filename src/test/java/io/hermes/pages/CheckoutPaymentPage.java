@@ -1,12 +1,12 @@
 package io.hermes.pages;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.hermes.elements.CheckoutPaymentElements;
 import io.hermes.model.PaymentCard;
 
 public class CheckoutPaymentPage extends BasePage {
 
-    public CheckoutPaymentPage(AndroidDriver driver) {
+    public CheckoutPaymentPage(AppiumDriver driver) {
         super(driver);
     }
 

@@ -1,12 +1,12 @@
 package io.hermes.pages;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.hermes.elements.CheckoutAddressElements;
 import io.hermes.model.Address;
 
 public class CheckoutAddressPage extends BasePage {
 
-    public CheckoutAddressPage(AndroidDriver driver) {
+    public CheckoutAddressPage(AppiumDriver driver) {
         super(driver);
     }
 

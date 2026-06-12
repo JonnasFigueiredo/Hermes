@@ -1,11 +1,11 @@
 package io.hermes.pages;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.hermes.elements.CheckoutCompleteElements;
 
 public class CheckoutCompletePage extends BasePage {
 
-    public CheckoutCompletePage(AndroidDriver driver) {
+    public CheckoutCompletePage(AppiumDriver driver) {
         super(driver);
     }
 

@@ -23,7 +23,7 @@
 | 1 | BDD suite (21 scenarios, pt-BR Gherkin) green on a local emulator | validating |
 | 2 | CI on GitHub Actions: compile gate + emulator E2E, device matrix (API 30/33) | configured, pending first green run |
 | 3 | Allure report published to GitHub Pages with run history; `workflow_dispatch` with suite selector | configured, pending first green run |
-| 4 | Containerized device grid (docker-android) for Linux/KVM hosts | compose + docs |
+| 4 | Containerized device grid (docker-android) for Linux/KVM hosts | compose + docs + CI validation workflow, pending first run |
 | 5 | Cloud device farm profile (BrowserStack App Automate, open-source plan) | profile ready, account pending |
-| 6 | iOS suite on a macOS runner (XCUITest driver, same Gherkin) | planned |
+| 6 | iOS suite on a macOS runner (XCUITest driver, same Gherkin) | core is platform-agnostic; experimental workflow, pending first green run |
 | 7 | Test observability (ReportPortal integration) | planned |

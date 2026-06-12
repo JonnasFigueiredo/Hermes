@@ -1,6 +1,6 @@
 package io.hermes.pages.components;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.hermes.core.NativeDialogs;
 import io.hermes.elements.NavBarElements;
 import io.hermes.pages.BasePage;
@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public class NavBar extends BasePage {
 
-    public NavBar(AndroidDriver driver) {
+    public NavBar(AppiumDriver driver) {
         super(driver);
     }
 

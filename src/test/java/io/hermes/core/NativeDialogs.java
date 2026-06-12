@@ -1,5 +1,6 @@
 package io.hermes.core;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -9,12 +10,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 /**
- * Handles native Android alert dialogs (e.g. the SUT's reset and logout confirmations).
+ * Handles native alert dialogs (e.g. the SUT's reset and logout confirmations)
+ * on both platforms.
  */
 public final class NativeDialogs {
 
     /** Positive button of a native Android alert. */
-    private static final By POSITIVE_BUTTON = By.id("android:id/button1");
+    private static final By ANDROID_POSITIVE_BUTTON = By.id("android:id/button1");
 
     private NativeDialogs() {
     }
@@ -24,11 +26,17 @@ public final class NativeDialogs {
      * was accepted. Some flows chain two dialogs (confirm + acknowledge), so callers
      * can invoke this repeatedly.
      */
-    public static boolean acceptIfPresent(AndroidDriver driver, Duration timeout) {
+    public static boolean acceptIfPresent(AppiumDriver driver, Duration timeout) {
         try {
-            new WebDriverWait(driver, timeout)
-                    .until(ExpectedConditions.elementToBeClickable(POSITIVE_BUTTON))
-                    .click();
+            if (driver instanceof AndroidDriver) {
+                new WebDriverWait(driver, timeout)
+                        .until(ExpectedConditions.elementToBeClickable(ANDROID_POSITIVE_BUTTON))
+                        .click();
+            } else {
+                new WebDriverWait(driver, timeout)
+                        .until(ExpectedConditions.alertIsPresent())
+                        .accept();
+            }
             return true;
         } catch (TimeoutException e) {
             return false;

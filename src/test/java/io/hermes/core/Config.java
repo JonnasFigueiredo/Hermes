@@ -26,12 +26,17 @@ import java.util.stream.Collectors;
  */
 public final class Config {
 
-    public static final String APP_PACKAGE = "com.saucelabs.mydemoapp.rn";
+    /** Android applicationId and iOS bundleId — the SUT uses the same value on both. */
+    public static final String APP_ID = "com.saucelabs.mydemoapp.rn";
 
     private static final String CAPABILITY_PREFIX = "capability.";
     private static final Properties PROFILE = loadProfile(activeProfile());
 
     private Config() {
+    }
+
+    public static Platform platform() {
+        return Platform.from(get("platform", "android"));
     }
 
     public static String activeProfile() {
@@ -48,7 +53,10 @@ public final class Config {
     }
 
     public static String appPath() {
-        String path = get("app.path", "apps/Android-MyDemoAppRN.1.3.0.build-244.apk");
+        String defaultPath = platform() == Platform.IOS
+                ? "apps/MyRNDemoApp.app"
+                : "apps/Android-MyDemoAppRN.1.3.0.build-244.apk";
+        String path = get("app.path", defaultPath);
         // Farm profiles reference a pre-uploaded app id (e.g. bs://...) instead of a file
         if (path.contains("://")) {
             return path;
@@ -57,7 +65,8 @@ public final class Config {
     }
 
     public static String deviceName() {
-        return get("device.name", "Android Emulator");
+        String defaultName = platform() == Platform.IOS ? "iPhone 15" : "Android Emulator";
+        return get("device.name", defaultName);
     }
 
     /**

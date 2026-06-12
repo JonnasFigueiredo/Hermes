@@ -1,6 +1,6 @@
 package io.hermes.pages;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.hermes.elements.LoginElements;
 import io.hermes.model.User;
 import io.hermes.pages.components.NavBar;
@@ -9,7 +9,7 @@ public class LoginPage extends BasePage {
 
     private final NavBar navBar;
 
-    public LoginPage(AndroidDriver driver) {
+    public LoginPage(AppiumDriver driver) {
         super(driver);
         this.navBar = new NavBar(driver);
     }
