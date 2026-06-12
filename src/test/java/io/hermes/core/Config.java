@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 /**
  * Centralized configuration with execution profiles. The same suite targets a local
@@ -80,17 +80,24 @@ public final class Config {
     }
 
     /**
-     * Extra Appium capabilities declared in the active profile with the
-     * {@code capability.} prefix, e.g. {@code capability.appium:udid=emulator-5554}.
-     * This is what lets grid and device-farm profiles add provider-specific
-     * capabilities without any code change.
+     * Extra Appium capabilities declared with the {@code capability.} prefix in the
+     * active profile, overridable per run via system properties
+     * (e.g. {@code -Dcapability.appium:platformVersion=13.0}). This is what lets grid
+     * and device-farm targets add provider-specific capabilities without code changes.
      */
     public static Map<String, String> extraCapabilities() {
-        return PROFILE.stringPropertyNames().stream()
-                .filter(key -> key.startsWith(CAPABILITY_PREFIX))
-                .collect(Collectors.toMap(
-                        key -> key.substring(CAPABILITY_PREFIX.length()),
-                        PROFILE::getProperty));
+        Map<String, String> capabilities = new HashMap<>();
+        for (String key : PROFILE.stringPropertyNames()) {
+            if (key.startsWith(CAPABILITY_PREFIX)) {
+                capabilities.put(key.substring(CAPABILITY_PREFIX.length()), PROFILE.getProperty(key));
+            }
+        }
+        for (String key : System.getProperties().stringPropertyNames()) {
+            if (key.startsWith(CAPABILITY_PREFIX)) {
+                capabilities.put(key.substring(CAPABILITY_PREFIX.length()), System.getProperty(key));
+            }
+        }
+        return capabilities;
     }
 
     private static String get(String key, String defaultValue) {
