@@ -24,6 +24,9 @@ public final class DriverFactory {
                 .setUiautomator2ServerLaunchTimeout(Duration.ofMinutes(2))
                 .setAdbExecTimeout(Duration.ofMinutes(2));
 
+        // Grid/farm profiles add provider-specific capabilities without code changes
+        Config.extraCapabilities().forEach(options::setCapability);
+
         try {
             return new AndroidDriver(URI.create(Config.appiumUrl()).toURL(), options);
         } catch (MalformedURLException e) {
