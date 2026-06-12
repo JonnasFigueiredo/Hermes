@@ -26,7 +26,9 @@ download() {
     return 0
   fi
   echo "Downloading $url"
-  curl --fail --location --retry 3 "${CURL_EXTRA_OPTS[@]}" --output "$target" "$url"
+  # ${arr[@]+...} keeps macOS bash 3.2 happy: expanding an empty array under
+  # `set -u` is an "unbound variable" error there.
+  curl --fail --location --retry 3 ${CURL_EXTRA_OPTS[@]+"${CURL_EXTRA_OPTS[@]}"} --output "$target" "$url"
   echo "Saved to $target"
 }
 

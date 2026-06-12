@@ -28,6 +28,7 @@ public class NavBar extends BasePage {
         openMenu();
         if (!isVisible(NavBarElements.MENU_ITEM_LOG_IN, Duration.ofSeconds(3))
                 && isVisible(NavBarElements.MENU_ITEM_LOG_OUT, Duration.ofSeconds(2))) {
+            tap(NavBarElements.MENU_ITEM_LOG_OUT);
             confirmLogout();
             openMenu();
         }
