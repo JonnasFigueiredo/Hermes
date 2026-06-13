@@ -50,11 +50,17 @@ public abstract class BasePage {
     /** Dismisses the soft keyboard if it is up; harmless when it is not. */
     protected void hideKeyboardIfPresent() {
         if (io.hermes.core.Config.platform() == io.hermes.core.Platform.IOS) {
-            // On the iOS simulator hideKeyboard() is unreliable; tapping the keyboard's
-            // Return key dismisses it (this app's fields do not auto-submit on return).
+            // On the iOS simulator hideKeyboard() is unreliable. Text keyboards have a
+            // Return key; the numeric keypad (security code, expiry) does not, so fall
+            // back to tapping the neutral header, which dismisses any keyboard type.
             var returnKey = driver.findElements(io.appium.java_client.AppiumBy.accessibilityId("Return"));
             if (!returnKey.isEmpty()) {
                 returnKey.get(0).click();
+                return;
+            }
+            var header = driver.findElements(io.appium.java_client.AppiumBy.accessibilityId("container header"));
+            if (!header.isEmpty()) {
+                header.get(0).click();
             }
             return;
         }
