@@ -4,8 +4,11 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.Map;
@@ -56,15 +59,23 @@ public final class Gestures {
         }
     }
 
-    /** Scrolls down until the locator matches at least one element, or gives up. */
+    /**
+     * Scrolls down until the locator is present, waiting briefly at each step so a
+     * screen that is still rendering gets a chance before we scroll past it. Throws
+     * if the element never appears.
+     */
     public WebElement scrollIntoView(By locator) {
-        for (int i = 0; i < MAX_SCROLLS; i++) {
-            var found = driver.findElements(locator);
-            if (!found.isEmpty()) {
-                return found.get(0);
+        for (int i = 0; i <= MAX_SCROLLS; i++) {
+            try {
+                return new WebDriverWait(driver, Duration.ofSeconds(2))
+                        .until(ExpectedConditions.presenceOfElementLocated(locator));
+            } catch (TimeoutException notYet) {
+                if (i < MAX_SCROLLS) {
+                    scrollDown();
+                }
             }
-            scrollDown();
         }
-        return driver.findElement(locator);
+        throw new org.openqa.selenium.NoSuchElementException(
+                "Element not found after scrolling: " + locator);
     }
 }

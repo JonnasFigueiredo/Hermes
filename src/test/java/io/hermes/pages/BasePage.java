@@ -39,6 +39,25 @@ public abstract class BasePage {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
     }
 
+    /**
+     * All elements present in the tree, visible or not. Use for counting/indexing lists
+     * whose items scroll off-screen (iOS does not report off-screen items as visible).
+     */
+    protected List<WebElement> waitAllPresent(By locator) {
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
+    }
+
+    /** Dismisses the soft keyboard if it is up; harmless when it is not. */
+    protected void hideKeyboardIfPresent() {
+        try {
+            if (driver instanceof io.appium.java_client.HidesKeyboard hidesKeyboard) {
+                hidesKeyboard.hideKeyboard();
+            }
+        } catch (RuntimeException keyboardAlreadyHidden) {
+            // no keyboard on screen — nothing to do
+        }
+    }
+
     protected boolean isVisible(By locator) {
         return isVisible(locator, SHORT_TIMEOUT);
     }

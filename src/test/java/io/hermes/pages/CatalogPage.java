@@ -28,7 +28,7 @@ public class CatalogPage extends BasePage {
     }
 
     public int visibleProductCount() {
-        return waitAllVisible(CatalogElements.STORE_ITEM).size();
+        return waitAllPresent(CatalogElements.STORE_ITEM).size();
     }
 
     public List<String> visibleProductNames() {
@@ -43,7 +43,7 @@ public class CatalogPage extends BasePage {
     }
 
     public ProductPage openProductAt(int index) {
-        List<WebElement> items = waitAllVisible(CatalogElements.STORE_ITEM);
+        List<WebElement> items = waitAllPresent(CatalogElements.STORE_ITEM);
         items.get(index).click();
         return new ProductPage(driver);
     }

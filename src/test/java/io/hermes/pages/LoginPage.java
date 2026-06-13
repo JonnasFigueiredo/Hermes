@@ -40,6 +40,8 @@ public class LoginPage extends BasePage {
     }
 
     public void submit() {
+        // On iOS the soft keyboard covers the Login button after typing.
+        hideKeyboardIfPresent();
         tap(LoginElements.LOGIN_BUTTON);
     }
 
