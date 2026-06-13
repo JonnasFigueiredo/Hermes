@@ -89,6 +89,20 @@ public abstract class BasePage {
         field.sendKeys(text);
     }
 
+    /**
+     * Types into a field that may sit below the fold or under the keyboard, as happens
+     * on long iOS forms: dismiss the previous keyboard, scroll the field into view,
+     * focus it and type. On Android, where the fields are already visible, this is
+     * equivalent to {@link #type}.
+     */
+    protected void typeIntoForm(By locator, String text) {
+        hideKeyboardIfPresent();
+        WebElement field = gestures.scrollUntilVisible(locator);
+        field.click();
+        field.clear();
+        field.sendKeys(text);
+    }
+
     /** Visible texts of every element matched by the locator, in screen order. */
     protected List<String> textsOf(By locator) {
         return waitAllVisible(locator).stream()

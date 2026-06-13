@@ -60,6 +60,24 @@ public final class Gestures {
     }
 
     /**
+     * Scrolls down until the element is not just present but actually displayed. Form
+     * fields below the fold (or under the iOS keyboard) report present-but-not-visible,
+     * so presence alone is not enough to interact with them.
+     */
+    public WebElement scrollUntilVisible(By locator) {
+        for (int i = 0; i <= MAX_SCROLLS; i++) {
+            var found = driver.findElements(locator);
+            if (!found.isEmpty() && found.get(0).isDisplayed()) {
+                return found.get(0);
+            }
+            if (i < MAX_SCROLLS) {
+                scrollDown();
+            }
+        }
+        return driver.findElement(locator);
+    }
+
+    /**
      * Scrolls down until the locator is present, waiting briefly at each step so a
      * screen that is still rendering gets a chance before we scroll past it. Throws
      * if the element never appears.

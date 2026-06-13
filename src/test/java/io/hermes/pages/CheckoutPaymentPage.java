@@ -15,15 +15,16 @@ public class CheckoutPaymentPage extends BasePage {
     }
 
     public void fillCard(PaymentCard card) {
-        type(CheckoutPaymentElements.FULL_NAME_FIELD, card.holder());
+        typeIntoForm(CheckoutPaymentElements.FULL_NAME_FIELD, card.holder());
         if (!card.number().isEmpty()) {
-            type(CheckoutPaymentElements.CARD_NUMBER_FIELD, card.number());
+            typeIntoForm(CheckoutPaymentElements.CARD_NUMBER_FIELD, card.number());
         }
-        type(CheckoutPaymentElements.EXPIRATION_DATE_FIELD, card.expirationDate());
-        type(CheckoutPaymentElements.SECURITY_CODE_FIELD, card.securityCode());
+        typeIntoForm(CheckoutPaymentElements.EXPIRATION_DATE_FIELD, card.expirationDate());
+        typeIntoForm(CheckoutPaymentElements.SECURITY_CODE_FIELD, card.securityCode());
     }
 
     public CheckoutReviewPage reviewOrder() {
+        hideKeyboardIfPresent();
         gestures.scrollIntoView(CheckoutPaymentElements.REVIEW_ORDER_BUTTON);
         tap(CheckoutPaymentElements.REVIEW_ORDER_BUTTON);
         return new CheckoutReviewPage(driver);

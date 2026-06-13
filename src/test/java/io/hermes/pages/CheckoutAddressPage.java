@@ -15,11 +15,12 @@ public class CheckoutAddressPage extends BasePage {
     }
 
     public CheckoutPaymentPage fillAndGoToPayment(Address address) {
-        type(CheckoutAddressElements.FULL_NAME_FIELD, address.fullName());
-        type(CheckoutAddressElements.ADDRESS_LINE_1_FIELD, address.addressLine1());
-        type(CheckoutAddressElements.CITY_FIELD, address.city());
-        type(CheckoutAddressElements.ZIP_CODE_FIELD, address.zipCode());
-        type(CheckoutAddressElements.COUNTRY_FIELD, address.country());
+        typeIntoForm(CheckoutAddressElements.FULL_NAME_FIELD, address.fullName());
+        typeIntoForm(CheckoutAddressElements.ADDRESS_LINE_1_FIELD, address.addressLine1());
+        typeIntoForm(CheckoutAddressElements.CITY_FIELD, address.city());
+        typeIntoForm(CheckoutAddressElements.ZIP_CODE_FIELD, address.zipCode());
+        typeIntoForm(CheckoutAddressElements.COUNTRY_FIELD, address.country());
+        hideKeyboardIfPresent();
         gestures.scrollIntoView(CheckoutAddressElements.TO_PAYMENT_BUTTON);
         tap(CheckoutAddressElements.TO_PAYMENT_BUTTON);
         return new CheckoutPaymentPage(driver);
