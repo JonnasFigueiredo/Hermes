@@ -49,11 +49,13 @@ public abstract class BasePage {
 
     /** Dismisses the soft keyboard if it is up; harmless when it is not. */
     protected void hideKeyboardIfPresent() {
-        // On the iOS simulator hideKeyboard() is unreliable; tapping the keyboard's
-        // Return key dismisses it (this app's fields do not auto-submit on return).
-        var returnKey = driver.findElements(io.appium.java_client.AppiumBy.accessibilityId("Return"));
-        if (!returnKey.isEmpty()) {
-            returnKey.get(0).click();
+        if (io.hermes.core.Config.platform() == io.hermes.core.Platform.IOS) {
+            // On the iOS simulator hideKeyboard() is unreliable; tapping the keyboard's
+            // Return key dismisses it (this app's fields do not auto-submit on return).
+            var returnKey = driver.findElements(io.appium.java_client.AppiumBy.accessibilityId("Return"));
+            if (!returnKey.isEmpty()) {
+                returnKey.get(0).click();
+            }
             return;
         }
         try {
@@ -96,6 +98,12 @@ public abstract class BasePage {
      * equivalent to {@link #type}.
      */
     protected void typeIntoForm(By locator, String text) {
+        // On Android the fields are visible and plain typing is what kept the suite
+        // green; the scroll-and-dismiss dance is only needed on long iOS forms.
+        if (io.hermes.core.Config.platform() == io.hermes.core.Platform.ANDROID) {
+            type(locator, text);
+            return;
+        }
         hideKeyboardIfPresent();
         WebElement field = gestures.scrollUntilVisible(locator);
         field.click();
