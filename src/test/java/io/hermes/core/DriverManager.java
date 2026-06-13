@@ -8,11 +8,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Map;
 
 /**
  * Owns the driver lifecycle: a single driver for the whole run, with a deterministic
- * app state reset between scenarios via the SUT's documented long-press on the header
- * logo, so every scenario starts from the same clean catalog screen.
+ * app state reset between scenarios so every scenario starts from the same clean,
+ * logged-out catalog and tests stay fully independent.
+ *
+ * <p>On Android the reset clears the app data ({@code mobile: clearApp}), which is the
+ * only reliable way to guarantee a logged-out session on slower CI devices. The SUT's
+ * documented long-press reset is also exercised; on iOS it is the reset mechanism.</p>
  */
 public final class DriverManager {
 
@@ -47,14 +52,20 @@ public final class DriverManager {
     public static void resetAppState() {
         AppiumDriver d = getDriver();
         InteractsWithApps apps = (InteractsWithApps) d;
+
         apps.terminateApp(Config.APP_ID);
+        if (Config.platform() == Platform.ANDROID) {
+            // pm clear: wipes app data → guaranteed logged-out + empty cart, the only
+            // reset that is reliable on slow CI emulators.
+            d.executeScript("mobile: clearApp", Map.of("appId", Config.APP_ID));
+        }
         apps.activateApp(Config.APP_ID);
+
         WebDriverWait wait = new WebDriverWait(d, Duration.ofSeconds(20));
         WebElement logo = wait.until(ExpectedConditions.presenceOfElementLocated(
                 AppiumBy.accessibilityId(RESET_APP_LOGO)));
+        // Also exercise the SUT's documented long-press reset (the reset mechanism on iOS).
         new Gestures(d).longPress(logo, Duration.ofSeconds(1));
-        // The reset may ask for confirmation and chain an acknowledge dialog;
-        // without accepting them a logged-in session would leak across scenarios.
         if (NativeDialogs.acceptIfPresent(d, Duration.ofSeconds(5))) {
             NativeDialogs.acceptIfPresent(d, Duration.ofSeconds(2));
         }

@@ -61,21 +61,6 @@ public class NavBar extends BasePage {
         }
     }
 
-    /**
-     * Guarantees a logged-out state and leaves the app on the catalog. Used as a
-     * safety net after the app reset: on slow CI devices the documented reset does
-     * not always clear the session, which would break scenarios that assume a guest.
-     */
-    public void ensureLoggedOut() {
-        openMenu();
-        if (isVisible(NavBarElements.MENU_ITEM_LOG_OUT, SHORT_TIMEOUT)) {
-            tap(NavBarElements.MENU_ITEM_LOG_OUT);
-            confirmLogout();
-        } else {
-            tap(NavBarElements.MENU_ITEM_CATALOG);
-        }
-    }
-
     public void openCart() {
         tap(NavBarElements.CART_BADGE);
     }

@@ -16,7 +16,9 @@ public class CheckoutPaymentPage extends BasePage {
 
     public void fillCard(PaymentCard card) {
         type(CheckoutPaymentElements.FULL_NAME_FIELD, card.holder());
-        type(CheckoutPaymentElements.CARD_NUMBER_FIELD, card.number());
+        if (!card.number().isEmpty()) {
+            type(CheckoutPaymentElements.CARD_NUMBER_FIELD, card.number());
+        }
         type(CheckoutPaymentElements.EXPIRATION_DATE_FIELD, card.expirationDate());
         type(CheckoutPaymentElements.SECURITY_CODE_FIELD, card.securityCode());
     }

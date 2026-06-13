@@ -36,9 +36,9 @@ public class CheckoutSteps {
         fillPayment(PaymentCard.valid());
     }
 
-    @Quando("o usuário informa um cartão de pagamento inválido")
-    public void oUsuarioInformaUmCartaoDePagamentoInvalido() {
-        fillPayment(PaymentCard.withInvalidNumber());
+    @Quando("o usuário informa um pagamento sem número de cartão")
+    public void oUsuarioInformaUmPagamentoSemNumeroDeCartao() {
+        fillPayment(PaymentCard.withoutNumber());
     }
 
     @Quando("o usuário revisa e confirma o pedido")

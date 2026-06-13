@@ -6,7 +6,6 @@ import io.cucumber.java.BeforeAll;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.Scenario;
 import io.hermes.core.DriverManager;
-import io.hermes.pages.components.NavBar;
 import org.openqa.selenium.OutputType;
 
 import java.io.IOException;
@@ -31,7 +30,6 @@ public class Hooks {
     @Before
     public void resetAppState() {
         DriverManager.resetAppState();
-        new NavBar(DriverManager.getDriver()).ensureLoggedOut();
     }
 
     /**

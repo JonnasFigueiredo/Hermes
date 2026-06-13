@@ -10,7 +10,8 @@ public record PaymentCard(String holder, String number, String expirationDate, S
         return new PaymentCard("Bob Builder", "325812657568789", "0330", "123");
     }
 
-    public static PaymentCard withInvalidNumber() {
-        return new PaymentCard("Bob Builder", "1234", "0330", "123");
+    /** Card with an empty number — the SUT rejects it as a required field. */
+    public static PaymentCard withoutNumber() {
+        return new PaymentCard("Bob Builder", "", "0330", "123");
     }
 }
