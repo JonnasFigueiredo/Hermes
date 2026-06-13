@@ -49,8 +49,11 @@ public final class DriverFactory {
                 // First CI run compiles WebDriverAgent from scratch — give it room.
                 .setWdaLaunchTimeout(Duration.ofMinutes(8))
                 .setWdaConnectionTimeout(Duration.ofMinutes(8))
-                .setWdaStartupRetries(2)
-                .setWdaStartupRetryInterval(Duration.ofSeconds(20));
+                .setWdaStartupRetries(4)
+                .setWdaStartupRetryInterval(Duration.ofSeconds(20))
+                // A fresh WDA per session avoids the intermittent ECONNREFUSED:8100
+                // seen when a stale agent lingers on the CI simulator.
+                .setUseNewWDA(true);
         applyExtraCapabilities(options::setCapability);
         return options;
     }

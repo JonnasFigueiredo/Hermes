@@ -52,8 +52,11 @@ jobs:
       - name: Resolve app path
         run: echo "APP_PATH=$(find apps -maxdepth 2 -name '*.app' -type d | head -1)" >> "$GITHUB_ENV"
 
-      - name: List available simulators
-        run: xcrun simctl list devices available | head -30
+      - name: Boot iOS simulator
+        run: |
+          xcrun simctl list devices available | head -30
+          xcrun simctl boot "$DEVICE_NAME" || true
+          xcrun simctl bootstatus "$DEVICE_NAME" -b || true
 
       - name: Start Appium server
         run: |
@@ -66,7 +69,8 @@ jobs:
           curl -sf http://127.0.0.1:4723/status
 
       - name: Run E2E tests on iOS simulator
-        run: mvn -B verify $SUITE_FLAG
+        # WebDriverAgent startup is occasionally flaky on hosted runners; retry once.
+        run: mvn -B verify $SUITE_FLAG || mvn -B verify $SUITE_FLAG
 
       - name: Upload Allure results
         if: always()
