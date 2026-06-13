@@ -7,7 +7,11 @@ import org.openqa.selenium.By;
 public final class CatalogElements {
 
     public static final By SCREEN = AppiumBy.accessibilityId("products screen");
-    public static final By STORE_ITEM = AppiumBy.accessibilityId("store item");
+    // Android exposes a "store item" card container; iOS collapses the card and only
+    // surfaces the "store item text" child, which is tappable by coordinates.
+    public static final By STORE_ITEM = PlatformBy.of(
+            AppiumBy.accessibilityId("store item"),
+            AppiumBy.accessibilityId("store item text"));
     public static final By STORE_ITEM_TEXT = AppiumBy.accessibilityId("store item text");
     public static final By STORE_ITEM_PRICE = AppiumBy.accessibilityId("store item price");
 

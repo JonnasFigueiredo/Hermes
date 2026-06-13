@@ -22,7 +22,9 @@ public class CatalogPage extends BasePage {
     }
 
     public boolean isLoaded() {
-        return isVisible(CatalogElements.STORE_ITEM, DEFAULT_TIMEOUT);
+        // "products screen" is present on both platforms and does not depend on the
+        // product-card structure, which differs between Android and iOS.
+        return isVisible(CatalogElements.SCREEN, DEFAULT_TIMEOUT);
     }
 
     public int visibleProductCount() {

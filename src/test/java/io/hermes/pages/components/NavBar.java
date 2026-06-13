@@ -62,12 +62,12 @@ public class NavBar extends BasePage {
     }
 
     public void openCart() {
-        tap(NavBarElements.CART_BADGE);
+        tap(NavBarElements.CART);
     }
 
     /** Text shown on the cart badge, e.g. "1" when one item is in the cart. */
     public String cartBadgeText() {
-        return nonBlankTextOf(NavBarElements.CART_BADGE);
+        return nonBlankTextOf(NavBarElements.CART);
     }
 
     /**
@@ -76,6 +76,6 @@ public class NavBar extends BasePage {
      * on the first non-blank read would race on slower devices.
      */
     public boolean cartBadgeShows(String expected) {
-        return waitTextEquals(NavBarElements.CART_BADGE, expected);
+        return waitTextEquals(NavBarElements.CART, expected);
     }
 }
