@@ -8,20 +8,21 @@
 ![Allure](https://img.shields.io/badge/Allure-Report-yellow)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-Mobile E2E test framework for Android, built with **Appium 2, Java 21, Maven, Cucumber (BDD) and JUnit 5**, with **Allure** reporting.
-The system under test is the [Sauce Labs My Demo App RN](https://github.com/saucelabs/my-demo-app-rn) v1.3.0 (pinned APK).
+Cross-platform mobile E2E test framework (**Android + iOS**), built with **Appium 2, Java 21, Maven, Cucumber (BDD) and JUnit 5**, with **Allure** reporting.
+The system under test is the [Sauce Labs My Demo App RN](https://github.com/saucelabs/my-demo-app-rn) v1.3.0 (pinned build).
 Gherkin scenarios are written in Brazilian Portuguese (`# language: pt`).
 
 ## What this project demonstrates
 
+- **One suite, two platforms** — the same 21 Gherkin scenarios run on Android (UiAutomator2) and iOS (XCUITest). Only the locators differ, resolved per platform by `PlatformBy`; features, steps and pages are shared.
 - **BDD with Cucumber** — 21 scenarios across 5 features (login, catalog, product details, cart and the full checkout flow), including `Esquema do Cenário` (Scenario Outline) with example tables.
 - **Page Objects with composition** — each screen has a *page* (behavior) backed by an *elements* class (locators only); every page shares the `NavBar` component by composition instead of inheritance chains.
 - **Reusable steps with parameters** — Cucumber expressions like `o usuário adiciona o produto {int} ao carrinho` keep the step vocabulary small and composable across features.
-- **Deterministic state reset** — before every scenario the app is terminated, relaunched and reset through the SUT's documented long-press on the header logo, keeping scenarios fully independent.
-- **Modern native gestures** — long-press and scroll implemented with `mobile:` commands (`mobile: longClickGesture`, `mobile: scrollGesture`); no legacy `TouchAction`.
+- **Deterministic state reset** — before every scenario the app data is cleared (Android) or reset via the SUT's documented long-press (iOS), keeping scenarios fully independent and logged out.
+- **Modern native gestures** — long-press and scroll implemented with `mobile:` commands per platform; no legacy `TouchAction`.
 - **Explicit waits only** — synchronization is done exclusively with `WebDriverWait`; there is no `Thread.sleep` in the codebase.
-- **Failure evidence** — a Cucumber hook captures a PNG to `target/screenshots/` and attaches it to the Allure report whenever a scenario fails.
-- **CI with a real emulator** — GitHub Actions boots a hardware-accelerated (KVM) Android emulator on `ubuntu-latest` and runs the suite headlessly.
+- **Failure evidence** — a Cucumber hook captures a PNG and the page source on failure, attaching the screenshot to the Allure report.
+- **CI on real devices and containers** — GitHub Actions runs the suite on a matrix of Android emulators (KVM), a containerized docker-android grid, and an iOS simulator on a macOS runner.
 
 ## Project structure
 
@@ -109,9 +110,9 @@ Every key can be overridden per run — precedence: system property > env var > 
 | `timeout.default` | `TIMEOUT_DEFAULT` | `15`                                   | Explicit-wait timeout (s); CI uses 30 |
 | `timeout.short`   | `TIMEOUT_SHORT`   | `5`                                    | Probe timeout (s); CI uses 10      |
 
-The core is platform-agnostic (`AppiumDriver` + platform-aware gestures and native
-dialogs). Android is the verified platform; iOS (XCUITest) is scaffolded and runs as an
-[experimental manual workflow](.github/workflows/ios-tests.yml) on a macOS runner.
+The core is platform-agnostic (`AppiumDriver` + platform-aware gestures, locators and
+native dialogs). Both platforms are verified green in CI: Android on an emulator matrix,
+iOS (XCUITest) via the [iOS workflow](.github/workflows/ios-tests.yml) on a macOS runner.
 
 Profiles may also declare provider-specific Appium capabilities with the
 `capability.` prefix (e.g. `capability.appium:platformVersion=13.0`), forwarded
@@ -137,7 +138,7 @@ using the KVM available on GitHub's ubuntu runners.
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) — principles and phases (device farm profile, iOS on a macOS runner, ReportPortal).
+See [ROADMAP.md](ROADMAP.md) — principles and phases. Next: full iOS regression coverage, the BrowserStack device-farm profile, and ReportPortal observability.
 
 ## License
 

@@ -25,5 +25,5 @@
 | 3 | Allure report published to GitHub Pages with run history; `workflow_dispatch` with suite selector | **done** |
 | 4 | Containerized device grid (docker-android) for Linux/KVM hosts | **done — green** (validated on CI) |
 | 5 | Cloud device farm profile (BrowserStack App Automate, open-source plan) | profile + workflow ready, account/secrets pending |
-| 6 | iOS suite on a macOS runner (XCUITest driver, same Gherkin) | WDA session works and scenarios run; iOS-specific selectors being tuned (experimental) |
+| 6 | iOS suite on a macOS runner (XCUITest driver, same Gherkin) | **done — smoke green** (full checkout end-to-end on the iOS simulator) |
 | 7 | Test observability (ReportPortal integration) | planned |

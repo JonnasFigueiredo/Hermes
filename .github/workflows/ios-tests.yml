@@ -1,8 +1,8 @@
-name: iOS E2E (experimental)
+name: iOS E2E
 
-# Manual trigger only while the iOS suite is being stabilized — it does not
-# gate pushes/PRs. Runs on a GitHub-hosted macOS runner (free for public repos),
-# which ships Xcode and iPhone simulators.
+# Manual trigger (the macOS runner is slower and the WebDriverAgent build is heavy,
+# so iOS is run on demand rather than on every push). Runs on a GitHub-hosted macOS
+# runner (free for public repos), which ships Xcode and iPhone simulators.
 on:
   workflow_dispatch:
     inputs:
