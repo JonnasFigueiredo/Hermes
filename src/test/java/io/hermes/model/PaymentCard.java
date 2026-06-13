@@ -7,7 +7,8 @@ package io.hermes.model;
 public record PaymentCard(String holder, String number, String expirationDate, String securityCode) {
 
     public static PaymentCard valid() {
-        return new PaymentCard("Bob Builder", "325812657568789", "0330", "123");
+        // Standard Luhn-valid test Visa: the app's own placeholder fails iOS validation.
+        return new PaymentCard("Bob Builder", "4111111111111111", "0330", "123");
     }
 
     /** Card with an empty number — the SUT rejects it as a required field. */
