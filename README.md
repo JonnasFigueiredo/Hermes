@@ -1,5 +1,6 @@
 # Hermes
 
+[![Mobile E2E Tests](https://github.com/JonnasFigueiredo/Hermes/actions/workflows/mobile-tests.yml/badge.svg)](https://github.com/JonnasFigueiredo/Hermes/actions/workflows/mobile-tests.yml)
 ![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
 ![Appium](https://img.shields.io/badge/Appium-2.x-purple?logo=appium)
 ![Cucumber](https://img.shields.io/badge/Cucumber-7-brightgreen?logo=cucumber)
@@ -76,7 +77,7 @@ Three complementary reports, each with a distinct role:
 | ------ | ------------------- | ----- |
 | **Cucumber HTML** (instant evidence) | During every run, including IDE runs | `target/cucumber-report/cucumber.html` |
 | **Masterthought** (rich offline HTML: charts per feature/tag/step) | On `mvn verify` (and on CI) | `target/cucumber-html-reports/overview-features.html` |
-| **Allure** (deep analysis: steps, attachments, run history) | `mvn allure:serve` locally; published to GitHub Pages by CI | `target/allure-results` → report |
+| **Allure** (deep analysis: steps, attachments, run history) | `mvn allure:serve` locally; [published to GitHub Pages](https://jonnasfigueiredo.github.io/Hermes/) by CI | `target/allure-results` → report |
 
 ```bash
 mvn verify          # runs the suite and builds the Masterthought report
