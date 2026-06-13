@@ -1,64 +1,64 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
 "  Como cliente do My Demo App
-  Quero me autenticar com minhas credenciais
-  Para comprar usando a minha conta","25028","Logout encerra a sessão","","2026-06-13","passed","2026-06-13","","Login","Logout encerra a sessão",""
-"  Como cliente do My Demo App
-  Quero me autenticar com minhas credenciais
-  Para comprar usando a minha conta","16185","Login sem credenciais exige o usuário","","2026-06-13","passed","2026-06-13","","Login","Login sem credenciais exige o usuário",""
-"  Como cliente do My Demo App
-  Quero me autenticar com minhas credenciais
-  Para comprar usando a minha conta","18323","Credenciais rejeitadas exibem mensagem de erro","","2026-06-13","passed","2026-06-13","","Login","Credenciais rejeitadas exibem mensagem de erro",""
-"  Como cliente do My Demo App
-  Quero me autenticar com minhas credenciais
-  Para comprar usando a minha conta","17874","Credenciais rejeitadas exibem mensagem de erro","","2026-06-13","passed","2026-06-13","","Login","Credenciais rejeitadas exibem mensagem de erro",""
+  Quero gerenciar os itens do meu carrinho
+  Para comprar somente o que eu realmente quero","24394","Carrinho vazio leva de volta às compras","","2026-06-13","broken","2026-06-13","","Carrinho","Carrinho vazio leva de volta às compras",""
 "  Como cliente do My Demo App
   Quero ajustar a quantidade de um produto
-  Para comprar mais de uma unidade de uma vez","14734","Contador de quantidade aumenta e diminui","","2026-06-13","passed","2026-06-13","","Detalhes do produto","Contador de quantidade aumenta e diminui",""
+  Para comprar mais de uma unidade de uma vez","22081","Adicionar ao carrinho com quantidade maior que um","","2026-06-13","broken","2026-06-13","","Detalhes do produto","Adicionar ao carrinho com quantidade maior que um",""
+"  Como cliente autenticado do My Demo App
+  Quero finalizar a compra dos itens do carrinho
+  Para receber meus produtos em casa","21407","Checkout exige autenticação","","2026-06-13","broken","2026-06-13","","Checkout","Checkout exige autenticação",""
+"  Como cliente do My Demo App
+  Quero navegar e ordenar o catálogo de produtos
+  Para encontrar itens que desejo comprar","21380","Ordenação do catálogo","","2026-06-13","broken","2026-06-13","","Catálogo","Ordenação do catálogo",""
+"  Como cliente do My Demo App
+  Quero navegar e ordenar o catálogo de produtos
+  Para encontrar itens que desejo comprar","21502","Ordenação do catálogo","","2026-06-13","broken","2026-06-13","","Catálogo","Ordenação do catálogo",""
 "  Como cliente do My Demo App
   Quero me autenticar com minhas credenciais
-  Para comprar usando a minha conta","17319","Login sem senha exige a senha","","2026-06-13","passed","2026-06-13","","Login","Login sem senha exige a senha",""
+  Para comprar usando a minha conta","21472","Credenciais rejeitadas exibem mensagem de erro","","2026-06-13","broken","2026-06-13","","Login","Credenciais rejeitadas exibem mensagem de erro",""
 "  Como cliente do My Demo App
-  Quero gerenciar os itens do meu carrinho
-  Para comprar somente o que eu realmente quero","21348","Adicionar um produto enche o carrinho","","2026-06-13","passed","2026-06-13","","Carrinho","Adicionar um produto enche o carrinho",""
+  Quero navegar e ordenar o catálogo de produtos
+  Para encontrar itens que desejo comprar","21567","Ordenação do catálogo","","2026-06-13","broken","2026-06-13","","Catálogo","Ordenação do catálogo",""
+"  Como cliente do My Demo App
+  Quero me autenticar com minhas credenciais
+  Para comprar usando a minha conta","21684","Credenciais rejeitadas exibem mensagem de erro","","2026-06-13","broken","2026-06-13","","Login","Credenciais rejeitadas exibem mensagem de erro",""
 "  Como cliente autenticado do My Demo App
   Quero finalizar a compra dos itens do carrinho
-  Para receber meus produtos em casa","16931","Checkout exige autenticação","","2026-06-13","passed","2026-06-13","","Checkout","Checkout exige autenticação",""
+  Para receber meus produtos em casa","21631","Pagamento sem número de cartão é bloqueado","","2026-06-13","broken","2026-06-13","","Checkout","Pagamento sem número de cartão é bloqueado",""
 "  Como cliente do My Demo App
-  Quero navegar e ordenar o catálogo de produtos
-  Para encontrar itens que desejo comprar","16556","Ordenação do catálogo","","2026-06-13","passed","2026-06-13","","Catálogo","Ordenação do catálogo",""
+  Quero me autenticar com minhas credenciais
+  Para comprar usando a minha conta","21489","Credenciais válidas levam ao catálogo","","2026-06-13","broken","2026-06-13","","Login","Credenciais válidas levam ao catálogo",""
 "  Como cliente do My Demo App
-  Quero navegar e ordenar o catálogo de produtos
-  Para encontrar itens que desejo comprar","12856","Catálogo lista produtos ao abrir o app","","2026-06-13","passed","2026-06-13","","Catálogo","Catálogo lista produtos ao abrir o app",""
-"  Como cliente do My Demo App
-  Quero navegar e ordenar o catálogo de produtos
-  Para encontrar itens que desejo comprar","16785","Ordenação do catálogo","","2026-06-13","passed","2026-06-13","","Catálogo","Ordenação do catálogo",""
-"  Como cliente autenticado do My Demo App
-  Quero finalizar a compra dos itens do carrinho
-  Para receber meus produtos em casa","38469","Pagamento sem número de cartão é bloqueado","","2026-06-13","passed","2026-06-13","","Checkout","Pagamento sem número de cartão é bloqueado",""
-"  Como cliente autenticado do My Demo App
-  Quero finalizar a compra dos itens do carrinho
-  Para receber meus produtos em casa","45880","Compra completa de ponta a ponta","","2026-06-13","passed","2026-06-13","","Checkout","Compra completa de ponta a ponta",""
-"  Como cliente do My Demo App
-  Quero gerenciar os itens do meu carrinho
-  Para comprar somente o que eu realmente quero","15476","Carrinho vazio leva de volta às compras","","2026-06-13","passed","2026-06-13","","Carrinho","Carrinho vazio leva de volta às compras",""
-"  Como cliente do My Demo App
-  Quero navegar e ordenar o catálogo de produtos
-  Para encontrar itens que desejo comprar","17098","Ordenação do catálogo","","2026-06-13","passed","2026-06-13","","Catálogo","Ordenação do catálogo",""
+  Quero me autenticar com minhas credenciais
+  Para comprar usando a minha conta","22194","Login sem senha exige a senha","","2026-06-13","broken","2026-06-13","","Login","Login sem senha exige a senha",""
 "  Como cliente do My Demo App
   Quero ajustar a quantidade de um produto
-  Para comprar mais de uma unidade de uma vez","14076","Adicionar ao carrinho com quantidade maior que um","","2026-06-13","passed","2026-06-13","","Detalhes do produto","Adicionar ao carrinho com quantidade maior que um",""
+  Para comprar mais de uma unidade de uma vez","21753","Contador de quantidade aumenta e diminui","","2026-06-13","broken","2026-06-13","","Detalhes do produto","Contador de quantidade aumenta e diminui",""
 "  Como cliente do My Demo App
   Quero gerenciar os itens do meu carrinho
-  Para comprar somente o que eu realmente quero","20638","Remover o único item esvazia o carrinho","","2026-06-13","passed","2026-06-13","","Carrinho","Remover o único item esvazia o carrinho",""
+  Para comprar somente o que eu realmente quero","25832","Adicionar um produto enche o carrinho","","2026-06-13","broken","2026-06-13","","Carrinho","Adicionar um produto enche o carrinho",""
+"  Como cliente do My Demo App
+  Quero navegar e ordenar o catálogo de produtos
+  Para encontrar itens que desejo comprar","22963","Detalhes do produto exibem preço e adicionar ao carrinho","","2026-06-13","broken","2026-06-13","","Catálogo","Detalhes do produto exibem preço e adicionar ao carrinho",""
+"  Como cliente do My Demo App
+  Quero gerenciar os itens do meu carrinho
+  Para comprar somente o que eu realmente quero","23516","Remover o único item esvazia o carrinho","","2026-06-13","broken","2026-06-13","","Carrinho","Remover o único item esvazia o carrinho",""
+"  Como cliente autenticado do My Demo App
+  Quero finalizar a compra dos itens do carrinho
+  Para receber meus produtos em casa","21804","Compra completa de ponta a ponta","","2026-06-13","broken","2026-06-13","","Checkout","Compra completa de ponta a ponta",""
+"  Como cliente do My Demo App
+  Quero gerenciar os itens do meu carrinho
+  Para comprar somente o que eu realmente quero","24106","Adicionar dois produtos diferentes ao carrinho","","2026-06-13","broken","2026-06-13","","Carrinho","Adicionar dois produtos diferentes ao carrinho",""
 "  Como cliente do My Demo App
   Quero me autenticar com minhas credenciais
-  Para comprar usando a minha conta","18337","Credenciais válidas levam ao catálogo","","2026-06-13","passed","2026-06-13","","Login","Credenciais válidas levam ao catálogo",""
+  Para comprar usando a minha conta","21774","Logout encerra a sessão","","2026-06-13","broken","2026-06-13","","Login","Logout encerra a sessão",""
+"  Como cliente do My Demo App
+  Quero me autenticar com minhas credenciais
+  Para comprar usando a minha conta","21393","Login sem credenciais exige o usuário","","2026-06-13","broken","2026-06-13","","Login","Login sem credenciais exige o usuário",""
 "  Como cliente do My Demo App
   Quero navegar e ordenar o catálogo de produtos
-  Para encontrar itens que desejo comprar","15157","Detalhes do produto exibem preço e adicionar ao carrinho","","2026-06-13","passed","2026-06-13","","Catálogo","Detalhes do produto exibem preço e adicionar ao carrinho",""
+  Para encontrar itens que desejo comprar","23735","Catálogo lista produtos ao abrir o app","","2026-06-13","broken","2026-06-13","","Catálogo","Catálogo lista produtos ao abrir o app",""
 "  Como cliente do My Demo App
   Quero navegar e ordenar o catálogo de produtos
-  Para encontrar itens que desejo comprar","16309","Ordenação do catálogo","","2026-06-13","passed","2026-06-13","","Catálogo","Ordenação do catálogo",""
-"  Como cliente do My Demo App
-  Quero gerenciar os itens do meu carrinho
-  Para comprar somente o que eu realmente quero","26229","Adicionar dois produtos diferentes ao carrinho","","2026-06-13","passed","2026-06-13","","Carrinho","Adicionar dois produtos diferentes ao carrinho",""
+  Para encontrar itens que desejo comprar","22691","Ordenação do catálogo","","2026-06-13","broken","2026-06-13","","Catálogo","Ordenação do catálogo",""
