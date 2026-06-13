@@ -61,8 +61,9 @@ jobs:
       - name: Start Appium server
         run: |
           nohup appium --log appium.log --log-level info &
-          # macOS has no GNU `timeout`; poll with a bounded loop instead.
-          for i in $(seq 1 30); do
+          # macOS has no GNU `timeout`; poll with a bounded loop. Loading the xcuitest
+          # driver on a cold runner can take well over a minute, so wait up to ~2.5 min.
+          for i in $(seq 1 150); do
             curl -sf http://127.0.0.1:4723/status && break
             sleep 1
           done
