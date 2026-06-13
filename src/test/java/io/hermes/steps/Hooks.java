@@ -41,13 +41,17 @@ public class Hooks {
         if (!scenario.isFailed()) {
             return;
         }
-        byte[] png = DriverManager.getDriver().getScreenshotAs(OutputType.BYTES);
+        var driver = DriverManager.getDriver();
         String name = scenario.getName().replaceAll("[^A-Za-z0-9-]+", "_");
+        byte[] png = driver.getScreenshotAs(OutputType.BYTES);
         try {
             Files.createDirectories(SCREENSHOT_DIR);
             Files.write(SCREENSHOT_DIR.resolve(name + ".png"), png);
+            // The page source is the fastest way to see how the SUT exposes elements on
+            // each platform — invaluable when porting selectors to iOS.
+            Files.writeString(SCREENSHOT_DIR.resolve(name + ".xml"), driver.getPageSource());
         } catch (IOException e) {
-            throw new UncheckedIOException("Could not save failure screenshot for " + name, e);
+            throw new UncheckedIOException("Could not save failure evidence for " + name, e);
         }
         scenario.attach(png, "image/png", name);
     }
