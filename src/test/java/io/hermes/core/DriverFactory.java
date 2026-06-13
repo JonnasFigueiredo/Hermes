@@ -45,8 +45,12 @@ public final class DriverFactory {
         XCUITestOptions options = new XCUITestOptions()
                 .setDeviceName(Config.deviceName())
                 .setApp(Config.appPath())
-                .setNewCommandTimeout(Duration.ofMinutes(3))
-                .setWdaLaunchTimeout(Duration.ofMinutes(4));
+                .setNewCommandTimeout(Duration.ofMinutes(5))
+                // First CI run compiles WebDriverAgent from scratch — give it room.
+                .setWdaLaunchTimeout(Duration.ofMinutes(8))
+                .setWdaConnectionTimeout(Duration.ofMinutes(8))
+                .setWdaStartupRetries(2)
+                .setWdaStartupRetryInterval(Duration.ofSeconds(20));
         applyExtraCapabilities(options::setCapability);
         return options;
     }
