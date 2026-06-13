@@ -58,7 +58,12 @@ jobs:
       - name: Start Appium server
         run: |
           nohup appium --log appium.log --log-level info &
-          timeout 30 bash -c 'until curl -sf http://127.0.0.1:4723/status; do sleep 1; done'
+          # macOS has no GNU `timeout`; poll with a bounded loop instead.
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:4723/status && break
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:4723/status
 
       - name: Run E2E tests on iOS simulator
         run: mvn -B verify $SUITE_FLAG

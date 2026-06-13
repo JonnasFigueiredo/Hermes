@@ -2,6 +2,7 @@ package io.hermes.pages.components;
 
 import io.appium.java_client.AppiumDriver;
 import io.hermes.core.NativeDialogs;
+import io.hermes.elements.LoginElements;
 import io.hermes.elements.NavBarElements;
 import io.hermes.pages.BasePage;
 
@@ -22,12 +23,18 @@ public class NavBar extends BasePage {
 
     /**
      * Opens the login screen through the drawer. If a previous scenario leaked a
-     * logged-in session, logs out first so the login entry is available again.
+     * logged-in session, the SUT redirects the login entry elsewhere; in that case
+     * we log out and retry once so the login form is actually shown.
      */
     public void openLoginFromMenu() {
         openMenu();
-        if (!isVisible(NavBarElements.MENU_ITEM_LOG_IN, Duration.ofSeconds(3))
-                && isVisible(NavBarElements.MENU_ITEM_LOG_OUT, Duration.ofSeconds(2))) {
+        tap(NavBarElements.MENU_ITEM_LOG_IN);
+        if (isVisible(LoginElements.LOGIN_BUTTON, SHORT_TIMEOUT)) {
+            return;
+        }
+        // Leaked logged-in session: log out and try again.
+        openMenu();
+        if (isVisible(NavBarElements.MENU_ITEM_LOG_OUT, SHORT_TIMEOUT)) {
             tap(NavBarElements.MENU_ITEM_LOG_OUT);
             confirmLogout();
             openMenu();
