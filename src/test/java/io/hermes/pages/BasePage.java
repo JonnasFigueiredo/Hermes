@@ -49,6 +49,13 @@ public abstract class BasePage {
 
     /** Dismisses the soft keyboard if it is up; harmless when it is not. */
     protected void hideKeyboardIfPresent() {
+        // On the iOS simulator hideKeyboard() is unreliable; tapping the keyboard's
+        // Return key dismisses it (this app's fields do not auto-submit on return).
+        var returnKey = driver.findElements(io.appium.java_client.AppiumBy.accessibilityId("Return"));
+        if (!returnKey.isEmpty()) {
+            returnKey.get(0).click();
+            return;
+        }
         try {
             if (driver instanceof io.appium.java_client.HidesKeyboard hidesKeyboard) {
                 hidesKeyboard.hideKeyboard();
