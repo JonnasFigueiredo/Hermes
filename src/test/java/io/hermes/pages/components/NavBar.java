@@ -43,7 +43,11 @@ public class NavBar extends BasePage {
     }
 
     public void openCatalogFromMenu() {
-        openMenu();
+        // Android reaches the catalog through the drawer; iOS has a dedicated catalog
+        // tab, so opening the menu first is unnecessary (and the menu would cover it).
+        if (io.hermes.core.Config.platform() == io.hermes.core.Platform.ANDROID) {
+            openMenu();
+        }
         tap(NavBarElements.MENU_ITEM_CATALOG);
     }
 

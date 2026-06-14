@@ -14,7 +14,7 @@ Gherkin scenarios are written in Brazilian Portuguese (`# language: pt`).
 
 ## What this project demonstrates
 
-- **One suite, two platforms** — the same 21 Gherkin scenarios run on Android (UiAutomator2) and iOS (XCUITest). Only the locators differ, resolved per platform by `PlatformBy`; features, steps and pages are shared.
+- **One suite, two platforms** — the same Gherkin scenarios drive Android (UiAutomator2) and iOS (XCUITest) from shared features, steps and pages; only the locators differ, resolved per platform by `PlatformBy`. The full 21-scenario suite is verified green on the Android emulator matrix; the smoke suite — including the full end-to-end checkout — is verified green on the iOS simulator.
 - **BDD with Cucumber** — 21 scenarios across 5 features (login, catalog, product details, cart and the full checkout flow), including `Esquema do Cenário` (Scenario Outline) with example tables.
 - **Page Objects with composition** — each screen has a *page* (behavior) backed by an *elements* class (locators only); every page shares the `NavBar` component by composition instead of inheritance chains.
 - **Reusable steps with parameters** — Cucumber expressions like `o usuário adiciona o produto {int} ao carrinho` keep the step vocabulary small and composable across features.

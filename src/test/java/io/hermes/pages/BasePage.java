@@ -119,9 +119,21 @@ public abstract class BasePage {
 
     /** Visible texts of every element matched by the locator, in screen order. */
     protected List<String> textsOf(By locator) {
-        return waitAllVisible(locator).stream()
-                .map(WebElement::getText)
+        // Presence, not visibility: list items below the fold are not "visible" on iOS,
+        // and reading their text (value) is enough to verify ordering and contents.
+        return waitAllPresent(locator).stream()
+                .map(this::elementText)
                 .toList();
+    }
+
+    /** Reads an element's text, falling back to its {@code value} (iOS static text). */
+    private String elementText(WebElement element) {
+        String text = element.getText();
+        if (text != null && !text.isBlank()) {
+            return text;
+        }
+        String value = element.getAttribute("value");
+        return value == null ? "" : value;
     }
 
     /**
