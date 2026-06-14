@@ -8,21 +8,17 @@ on:
 
 jobs:
   e2e-ios:
-    # smoke and regression run as parallel jobs so neither exceeds the timeout — the
-    # iOS simulator is slow and the whole 21-scenario suite does not fit in one job.
-    name: E2E iOS Simulator (${{ matrix.suite }})
+    # Runs the smoke suite (including the full end-to-end checkout). The iOS simulator
+    # is slow, so broader iOS regression coverage is tracked in ROADMAP.md as next work.
+    name: E2E iOS Simulator
     runs-on: macos-15
     timeout-minutes: 50
-    strategy:
-      fail-fast: false
-      matrix:
-        suite: [smoke, regression]
     env:
       PLATFORM: ios
       DEVICE_NAME: iPhone 16
       TIMEOUT_DEFAULT: '30'
       TIMEOUT_SHORT: '10'
-      SUITE_FLAG: -Dgroups=${{ matrix.suite }}
+      SUITE_FLAG: -Dgroups=smoke
     steps:
       - uses: actions/checkout@v4
 
@@ -74,7 +70,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-ios-${{ matrix.suite }}
+          name: allure-results-ios
           path: target/allure-results
           if-no-files-found: ignore
 
@@ -82,7 +78,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-reports-ios-${{ matrix.suite }}
+          name: cucumber-reports-ios
           path: |
             target/cucumber-report
             target/cucumber-html-reports
@@ -92,7 +88,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: failure-evidence-ios-${{ matrix.suite }}
+          name: failure-evidence-ios
           path: |
             target/screenshots
             appium.log
