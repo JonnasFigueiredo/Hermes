@@ -36,8 +36,8 @@ jobs:
 
       - name: Install Appium + XCUITest driver
         run: |
-          npm install -g appium
-          appium driver install xcuitest
+          npm install -g appium@2.19.0
+          appium driver install xcuitest@9.10.5
 
       - name: Download app under test (iOS simulator build)
         run: bash scripts/download-app.sh ios
